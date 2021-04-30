@@ -1,0 +1,11 @@
+from fuel_calc_app import create_app
+app = create_app()
+app.app_context().push()
+from fuel_calc_app.models import User, Car
+u = User.query.get(1)
+c = Car(name='Volvo', model='S40', car_year='2008', user=u)
+from fuel_calc_app import db
+with app.app_context():
+    db.session.add(c)
+    db.session.commit()
+    

@@ -1,0 +1,12 @@
+{% extends "base.jinja2" %}
+
+{% block app_content %}
+{% if current_user %}
+    <h3>Welcome {{ current_user.user_name }}!</h3>
+    <a href="{{ url_for('user_bp.logout') }}">Log Out</a>
+{% else %}
+    <h3>Welcome!</h3>
+{% endif %}
+
+
+{% endblock %}
