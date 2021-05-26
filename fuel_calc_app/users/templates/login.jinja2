@@ -1,17 +1,65 @@
 {% extends "base.jinja2" %}
 {% import 'bootstrap/wtf.html' as wtf %}
 
+
 {% block app_content %}
-<h1>Вход</h1>
-<div class="row>">
-    <div class="col-md-4">
-        {{ wtf.quick_form(form) }}
-    </div>
+{#<div class="container">#}
+{#    <div class="panel panel-default">#}
+{#        <div class="panel-body">#}
+{#            <span>#}
+{#                <h1 class="panel-title pull-left" style="font-size:30px;">#}
+{#                    Вход#}
+{#                </h1>#}
+{#            </span>#}
+{#            <br>#}
+{#            <hr>#}
+{#            <div class="row">#}
+{#                <div class="col-md-4">#}
+{#                    {{ wtf.quick_form(form) }}#}
+{#                </div>#}
+{#            </div>#}
+{#            <hr>#}
+{#            <div class="row">#}
+{#                <div class="col-md-12">#}
+{#                    <p>#}
+{#                        Новый пользователь?#}
+{#                        <a href="{{ url_for('user_bp.register') }}">Зарегистрироваться!</a>#}
+{#                    </p>#}
+{#                </div>#}
+{#                <hr>#}
+{#                <div class="col-md-12">#}
+{#                    <p>#}
+{#                        Забыли пароль?<a href=""> Сбросить</a>#}
+{#                    </p>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</div>#}
+<div style="padding-top:30px;">&nbsp;</div>
+<div class="container">
+    <div class="row">
+    	<div class="col-md-4 col-md-offset-4">
+    		<div class="panel panel-default">
+			  	<div class="panel-body">
+                    <span>
+                        <h1 class="panel-title pull-left" style="font-size:30px;">
+                            Вход
+                        </h1>
+                    </span>
+                    <br>
+                    <hr/>
+                    {{ wtf.quick_form(form) }}
+                    <hr/>
+                    <div class="col-md-offset-5">
+                        <h4>или</h4>
+                    </div>
+                    <a href="{{ url_for('user_bp.register') }}" class="btn btn-lg btn-block">Зарегистрироваться!</a>
+                    <br>
+                    <a href="" class="btn btn-sm btn-block">Сбросить пароль</a>
+			    </div>
+			</div>
+		</div>
+	</div>
 </div>
-<p>
-    Новый пользователь? <a href="{{ url_for('user_bp.register') }}">Зарегистрироваться!</a>
-</p>
-<p>
-    Забыли пароль?<a href=""> Сбросить</a>
-</p>
 {% endblock %}

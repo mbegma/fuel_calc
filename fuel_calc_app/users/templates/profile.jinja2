@@ -1,12 +1,152 @@
+{# https://bootsnipp.com/snippets/56ExR #}
+{# ------------------------------------ #}
+
 {% extends "base.jinja2" %}
 
+{% block subnav %}
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a href="{{ url_for('home_bp.home') }}">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Profile</li>
+      </ol>
+    </nav>
+{% endblock %}
+
 {% block app_content %}
-{% if current_user %}
-    <h3>Welcome {{ current_user.user_name }}!</h3>
-    <a href="{{ url_for('user_bp.logout') }}">Log Out</a>
-{% else %}
-    <h3>Welcome!</h3>
-{% endif %}
+    {#    разделитель в 50px #}
+{#    <div style="padding-top:50px;"> </div>#}
 
+    {#    левая часть с информацией о пользователе #}
+    <div class="col-lg-3 col-md-3 hidden-sm hidden-xs">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="media">
+                    <div align="center">
+                        <img class="thumbnail img-responsive" src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png"
+                             width="300px" height="300px">
+                    </div>
+                    <div class="media-body">
+                        <hr>
+                        <h3>
+                            <strong>Bio</strong>
+                        </h3>
+                        <p>
+                            {% if user.about_me %}{{ user.about_me }}{% else %}&nbsp;{% endif %}
+                        </p>
+                        <hr>
+                        <h3>
+                            <strong>Location</strong>
+                        </h3>
+                        <p>
+                            {% if user.location %}{{ user.location }}{% else %}&nbsp;{% endif %}
+                        </p>
+                        <hr>
+                        <h3>
+                            <strong>Gender</strong>
+                        </h3>
+                        <p>
+                            {% if user.gender %}{{ user.gender }}{% else %}&nbsp;{% endif %}
+                        </p>
+                        <hr>
+                        <h3>
+                            <strong>Birthday</strong>
+                        </h3>
+                        <p>
+                            {% if user.birthday %}{{ user.birthday.strftime('%d.%m.%Y') }}{% else %}&nbsp;{% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    {#    правая часть#}
+    <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <span>
+                    <h1 class="panel-title pull-left" style="font-size:30px;">
+                        {{ user.user_name }}
+                        <small>
+                            {{ user.email }}
+                            <small>
+                                <span style="text-decoration:none; color:grey;">
+                                    <i>
+                                        <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                        {% if user.last_seen %}
+                                            (последний визит: {{ user.last_seen.strftime('%d.%m.%Y %H:%M:%S')}})
+                                        {% endif %}
+                                    </i>
+                                </span>
+                            </small>
+                        </small>
+                    </h1>
+{#                    <h4>#}
+{#                        <a href="#" style="text-decoration:none;">#}
+{#                            <strong>John Doe</strong></a> – <small><small><a href="#" style="text-decoration:none; color:grey;"><i><i class="fa fa-clock-o" aria-hidden="true"></i> 42 minutes ago</i></a></small></small></h4>#}
+                </span>
+                <br><br>
+                <i class="fa fa-tags" aria-hidden="true"></i>
+                <a href="/tags/diaspora" class="tag">#diaspora</a>
+                <a href="/tags/hashtag" class="tag">#hashtag</a>
+                <a href="/tags/caturday" class="tag">#caturday</a>
+                <br><br><hr>
+                <span class="pull-left">
+                    <a href="{{ url_for('user_bp.edit_profile') }}" class="btn btn-link" style="text-decoration:none;">
+                        <i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Редактировать профиль
+                    </a>
+                    <a href="{{ url_for('user_bp.add_car') }}" class="btn btn-link" style="text-decoration:none;">
+                        <i class="fa fa-fw fa-files-o" aria-hidden="true"></i> Добавить авто
+                    </a>
+{#                    <a href="#" class="btn btn-link" style="text-decoration:none;">#}
+{#                        <i class="fa fa-fw fa-picture-o" aria-hidden="true"></i> Photos <span class="badge">42</span>#}
+{#                    </a>#}
+{#                    <a href="#" class="btn btn-link" style="text-decoration:none;">#}
+{#                        <i class="fa fa-fw fa-users" aria-hidden="true"></i> Contacts <span class="badge">42</span>#}
+{#                    </a>#}
+                </span>
+            </div>
+        </div>
+        <hr>
+        <!-- Панель с перечнем автомобилей. -->
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="pull-left">
+                    <a href="#">
+                        <img class="media-object img-circle"
+                             src="https://lut.im/7JCpw12uUT/mY0Mb78SvSIcjvkf.png"
+                             width="50px" height="50px"
+                             style="margin-right:8px; margin-top:-5px;">
+                    </a>
+                </div>
+                <h4>
+                    <a href="#" style="text-decoration:none;">
+                        <strong>{{ user.user_name}} гараж</strong>
+                    </a>
+                </h4>
+                <hr>
+                <div class="post-content">
+                    <div class="row">
+                        {% for car in cars %}
+                            <div class="col-lg-4 col-md-4 col-xs-4">
+                                <div class="thumbnail">
+                                    <img src="https://fakeimg.pl/280x180/?text=Car%20Photo" alt="...">
+                                    <div class="caption">
+                                        <h3>{{ car.car_name }}</h3>
+                                        <p>{{ car.car_model }}</p>
+                                        <p>
+                                            <a href="#" class="btn btn-primary" role="button">Button</a>
+                                            <a href="#" class="btn btn-default" role="button">Button</a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
 {% endblock %}
