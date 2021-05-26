@@ -16,16 +16,10 @@
 # \flask db stamp head - указывают, что текущее состояние базы данных отражает применение всех миграций
 # -----------------------------------------------------
 # from app import db, bcrypt
-from . import db, login
+from fuel_calc_app import db, login
 from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
-
-# @login.load_user
-# @login.user_loader
-# def load_user(user):
-#     return User.get(user)
 
 
 class User(UserMixin, db.Model):
@@ -38,6 +32,11 @@ class User(UserMixin, db.Model):
     registered_on = db.Column(db.DateTime, nullable=True)
     cars = db.relationship('Car', backref='user', lazy='dynamic')
     # role = db.Column(db.String, default='user')
+    about_me = db.Column(db.String(255))
+    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    location = db.Column(db.String(128))
+    gender = db.Column(db.String(32))
+    birthday = db.Column(db.DateTime)
 
     def __init__(self, user_name, email, plaintext_password):
         self.user_name = user_name
@@ -57,8 +56,8 @@ class User(UserMixin, db.Model):
 
 
 @login.user_loader
-def load_user(id):
-    return User.query.get(int(id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 class Car(db.Model):
@@ -70,6 +69,15 @@ class Car(db.Model):
     car_year = db.Column(db.Integer)
     is_default_car = db.Column(db.Boolean)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    added_date = db.Column(db.DateTime, nullable=True)
+
+    def __init__(self, car_name, car_model, car_year, is_default_car, user_id):
+        self.name = car_name
+        self.model = car_model
+        self.car_year = car_year
+        self.is_default_car = is_default_car
+        self.user_id = user_id
+        self.added_date = datetime.now()
 
     def __repr__(self):
         return '<Car {}>'.format(self.name)
